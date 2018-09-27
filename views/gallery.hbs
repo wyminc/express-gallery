@@ -1,0 +1,17 @@
+<h1>Products:</h1>
+<br>
+{{#each gallery}}
+  <div>
+    <h2>
+      <a href="/gallery/{{id}}">{{gallery}}</a>
+    </h2>
+  </div>
+{{/each}}
+
+<br>
+<br>
+<a href="/gallery/new">ADD PICTURE</a>
+
+<br>
+<br>
+{{> footer}}
