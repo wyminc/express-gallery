@@ -1,10 +1,10 @@
 
 exports.seed = function (knex, Promise) {
   // Deletes ALL existing entries
-  return knex('table_name').del()
+  return knex('gallery').del()
     .then(function () {
       // Inserts seed entries
-      return knex('table_name').insert([
+      return knex('gallery').insert([
         {
           author_id: 10,
           link: "https://robohash.org/atqueconsequaturmollitia.png?size=50x50&set=set1",
