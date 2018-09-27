@@ -1,0 +1,6 @@
+version: '3'
+services:
+  bookshelf-auth-demo:
+    image: wyminc/express-gallery:${IMAGE_VERSION}
+    environment:
+      NODE_ENV: production

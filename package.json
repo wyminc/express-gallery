@@ -1,0 +1,30 @@
+{
+  "name": "express-gallery",
+  "version": "1.0.0",
+  "description": "Express Gallery ===============",
+  "main": "server.js",
+  "dependencies": {
+    "bookshelf": "^0.13.3",
+    "express": "^4.16.3",
+    "handlebars": "^4.0.12",
+    "knex": "^0.15.2",
+    "nodemon": "^1.18.4",
+    "pg": "^7.4.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wyminc/express-gallery.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wyminc/express-gallery/issues"
+  },
+  "homepage": "https://github.com/wyminc/express-gallery#readme"
+}
