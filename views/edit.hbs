@@ -1,0 +1,27 @@
+{{#with pictureToEdit}}
+<form action="/gallery/{{id}}?_method=PUT" method="post">
+  <h3>
+    <label>EDIT PICTURE</label>
+  </h3>
+  <label>Author:
+    <input type="text" name='author' id=''>
+  </label>
+  <br><br>
+  <label>Link:
+    <input type="url" name='link' id=''>
+  </label>
+  <br><br>
+  <label>Description:
+    <input type="text" name='description' id=''>
+  </label>
+  <br><br>
+  <label>
+    <input type="submit" value='Submit' >
+  </label>
+  <br><br>
+  <a href="/gallery">Back to Gallery Home</a>
+  {{/with}}
+</form>
+
+<br><br>
+{{> footer}}
