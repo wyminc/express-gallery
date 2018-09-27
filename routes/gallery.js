@@ -1,9 +1,10 @@
 const express = require('express');
-const Router = espress.Router();
+const Router = express.Router();
 const knex = require('../knex/knex.js');
 
 //RENDER ALL
 Router.get('/', (req, res) => {
+  console.log('Welcome to the Gallery');
   knex.raw(`SELECT * FROM gallery`)
     .then( result => {
       const gallery = result.rows
