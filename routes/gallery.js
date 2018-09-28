@@ -60,10 +60,20 @@ Router.get('/gallery/:id', (req, res) => {
 //ADD 
 Router.post('/gallery/new', (req, res) => {
   const gallery = req.body;
-  knex.raw(`INSERT INTO gallery (author_id, link, description) VALUES ('${gallery.author_id}', '${gallery.link}', '${gallery.description}')`)
-    .then(results => {
-      res.redirect('/');
+  const payload = {
+    author_id: req.body.author_id,
+    link: req.body.link,
+    description: req.body.description}
+  gallery
+    .forge(payload)
+    .save()
+    .then( result => {
+      console.log('>>>result =', result);
     })
+  // knex.raw(`INSERT INTO gallery (author_id, link, description) VALUES ('${gallery.author_id}', '${gallery.link}', '${gallery.description}')`)
+  //   .then(results => {
+  //     res.redirect('/');
+  //   })
     .catch(err => {
       console.log('error', err)
       res.redirect('/');
