@@ -28,9 +28,11 @@ Router.get('/gallery/:id/edit', (req, res) => {
   const id = parseInt(idString);
   gallery
     .where({ id })
-    .fetch()
-    .then(image => {
-      const itemToEdit = image.attributes;
+    .fetch({ withRelated: ["author_id"] })
+    .then(results => {
+      const authorName = results.relations.author_id.attributes.author_name;
+      const itemToEdit = results.attributes;
+      itemToEdit.authorName = authorName;
       res.render("edit", { itemToEdit });
     })
     .catch(err => {
@@ -43,7 +45,6 @@ Router.get('/gallery/:id', (req, res) => {
   const { id: idString } = req.params;
   const id = parseInt(idString);
   gallery
-    .forge()
     .where({ id })
     .fetch({ withRelated: ["author_id"] })
     .then(results => {
@@ -83,34 +84,55 @@ Router.post('/gallery/new', (req, res) => {
     })
     .catch(err => {
       res.json('error', err);
-      res.redirect('/');
     });
 });
 
 //REMOVE  
 Router.delete('/gallery/:id', (req, res) => {
   const { id } = req.params;
-  gallery 
-    .where({id})
+  gallery
+    .where({ id })
     .destroy()
-    .then( result => {
+    .then(result => {
       res.redirect('/')
     })
-    .catch( err => {
+    .catch(err => {
       res.json(err);
     })
 });
 
 //EDIT  
 Router.put('/gallery/:id', (req, res) => {
-  const { id } = req.params;
-  const gallery = req.body;
-  knex.raw(`UPDATE gallery SET author_id = '${gallery.author_id}', link = ${gallery.link}, description = ${gallery.description} WHERE id = ${id}`)
-    .then(result => {
-      res.redirect(`/${id}`);
+  let { id } = req.params;
+  const info = req.body;
+  const galleryInfo = {
+    link: info.link,
+    description: info.description
+  };
+  gallery
+    .where({ id })
+    .fetch()
+    .then(results => {
+      return results.save(galleryInfo);
+    })
+    .then(results => {
+      const authorInfo = {
+        author_name: info.author_name
+      };
+      let id = results.attributes.author_id;
+      authors
+        .where({ id })
+        .fetch()
+        .then(results => {
+          return results.save(authorInfo);
+        })
+        .then(results => {
+          const { id: number } = req.params;
+          res.redirect(`/gallery/${number}`);
+        })
     })
     .catch(err => {
-      console.log('error', err)
+      res.json('error', err)
     });
 });
 
