@@ -4,30 +4,29 @@ const knex = require('../knex/knex.js');
 
 //RENDER ALL
 Router.get('/', (req, res) => {
-  console.log('Welcome to the Gallery');
   knex.raw(`SELECT * FROM gallery`)
-    .then( result => {
+    .then(result => {
       const gallery = result.rows
       res.render('gallery', { gallery });
     })
-    .catch( err => {
+    .catch(err => {
       console.log('error', err);
     });
 });
 
 //RENDER FORM 
 Router.get('/gallery/new', (req, res) => {
-    res.render('gallery-form');
+  res.render('gallery-form');
 });
 
 Router.get('/gallery/:id/edit', (req, res) => {
   const { id } = req.params;
   knex.raw(`SELECT * FROM gallery WHERE id = ${id}`)
-    .then( result => {
+    .then(result => {
       const itemToEdit = result.rows[0]
       res.render('edit', { itemToEdit });
     })
-    .catch( err => {
+    .catch(err => {
       console.log('error', err)
     })
 });
@@ -37,11 +36,11 @@ Router.get('/gallery/:id', (req, res) => {
   console.log('start render detail')
   const { id } = req.params;
   knex.raw(`SELECT * FROM gallery WHERE id = ${id}`)
-    .then( result => {
+    .then(result => {
       const gallery = result.rows[0]
       res.render('gallery-detail', gallery);
     })
-    .catch( err => {
+    .catch(err => {
       console.log('error', err);
     });
 });
@@ -50,10 +49,10 @@ Router.get('/gallery/:id', (req, res) => {
 Router.post('/gallery/new', (req, res) => {
   const gallery = req.body;
   knex.raw(`INSERT INTO gallery (author_id, link, description) VALUES ('${gallery.author_id}', '${gallery.link}', '${gallery.description}')`)
-    .then( results =>  {
+    .then(results => {
       res.redirect('/');
     })
-    .catch( err => {
+    .catch(err => {
       console.log('error', err)
       res.redirect('/');
     });
@@ -63,10 +62,10 @@ Router.post('/gallery/new', (req, res) => {
 Router.delete('/gallery/:id', (req, res) => {
   const { id } = req.params;
   knex.raw(`DELETE FROM gallery WHERE id = ${id}`)
-    .then( result => {
+    .then(result => {
       res.redirect('/');
     })
-    .catch( err => {
+    .catch(err => {
       console.log('error', err);
     });
 });
@@ -76,10 +75,10 @@ Router.put('/gallery/:id', (req, res) => {
   const { id } = req.params;
   const gallery = req.body;
   knex.raw(`UPDATE gallery SET author_id = '${gallery.author_id}', link = ${gallery.link}, description = ${gallery.description} WHERE id = ${id}`)
-  .then( result => {
+    .then(result => {
       res.redirect(`/${id}`);
     })
-    .catch( err => {
+    .catch(err => {
       console.log('error', err)
     });
 });
