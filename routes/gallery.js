@@ -7,6 +7,7 @@ Router.get('/', (req, res) => {
   console.log('Welcome to the Gallery');
   knex.raw(`SELECT * FROM gallery`)
     .then( result => {
+      console.log('result.rows[0] =', result.rows[0]);
       const gallery = result.rows
       res.render('gallery', { gallery });
     })
@@ -24,8 +25,8 @@ Router.get('/:id/edit', (req, res) => {
   const { id } = req.params;
   knex.raw(`SELECT * FROM gallery WHERE id = ${id}`)
     .then( result => {
-      const pictureToEdit = result.rows[0]
-      res.render('edit', { pictureToEdit });
+      const itemToEdit = result.rows[0]
+      res.render('edit', { itemToEdit });
     })
     .catch( err => {
       console.log('error', err)

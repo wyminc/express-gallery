@@ -1,4 +1,7 @@
-<h1>Author: {{author}}</h1>
+{{log}}
+{{log 'start gallery-detail.hbs'}}
+
+<h1>Author: {{author_name}}</h1>
 <br>
 <h2>Link: {{link}}</h2>
 <br>
@@ -9,11 +12,11 @@
 <br>
 
 <form method='post' action='/gallery/{{id}}?_method=DELETE'>
-  <button type="submit">Delete Picture</button>
+  <button type="submit">Delete Gallery item</button>
 </form>
 
 <br>
-<a href="/gallery/{{id}}/edit">Edit Picture</a>
+<a href="/gallery/{{id}}/edit">Edit Gallery item</a>
 
 <br>
 <br>

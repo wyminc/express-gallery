@@ -1,10 +1,13 @@
-{{#with pictureToEdit}}
+{{log}}
+{{log 'start edit.hbs'}}
+
+{{#with itemToEdit}}
 <form action="/gallery/{{id}}?_method=PUT" method="post">
   <h3>
-    <label>EDIT PICTURE</label>
+    <label>EDIT GALLERY ITEM</label>
   </h3>
   <label>Author:
-    <input type="text" name='author' id=''>
+    <input type="text" name='author_name' id=''>
   </label>
   <br><br>
   <label>Link:
