@@ -7,14 +7,24 @@ const gallery = require('../knex/models/gallery');
 
 //RENDER ALL
 Router.get('/', (req, res) => {
-  knex.raw(`SELECT * FROM gallery`)
-    .then(result => {
-      const gallery = result.rows
-      res.render('gallery', { gallery });
-    })
-    .catch(err => {
-      console.log('error', err);
-    });
+  gallery
+  .fetchAll()
+  .then( gallery => {
+    const items = gallery.serialize()
+    console.log(items);
+    res.render("gallery", { items })
+  })
+  .catch( err => {
+    res.json(err);
+  })
+  // knex.raw(`SELECT * FROM gallery`)
+  //   .then(result => {
+  //     const gallery = result.rows
+  //     res.render('gallery', { gallery });
+  //   })
+  //   .catch(err => {
+  //     console.log('error', err);
+  //   });
 });
 
 //RENDER FORM 
