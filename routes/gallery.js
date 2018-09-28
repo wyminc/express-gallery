@@ -7,7 +7,6 @@ Router.get('/', (req, res) => {
   console.log('Welcome to the Gallery');
   knex.raw(`SELECT * FROM gallery`)
     .then( result => {
-      console.log('result.rows[0] =', result.rows[0]);
       const gallery = result.rows
       res.render('gallery', { gallery });
     })
@@ -17,11 +16,11 @@ Router.get('/', (req, res) => {
 });
 
 //RENDER FORM 
-Router.get('/new', (req, res) => {
+Router.get('/gallery/new', (req, res) => {
     res.render('gallery-form');
 });
 
-Router.get('/:id/edit', (req, res) => {
+Router.get('/gallery/:id/edit', (req, res) => {
   const { id } = req.params;
   knex.raw(`SELECT * FROM gallery WHERE id = ${id}`)
     .then( result => {
@@ -34,7 +33,8 @@ Router.get('/:id/edit', (req, res) => {
 });
 
 //RENDER DETAIL 
-Router.get('/:id', (req, res) => {
+Router.get('/gallery/:id', (req, res) => {
+  console.log('start render detail')
   const { id } = req.params;
   knex.raw(`SELECT * FROM gallery WHERE id = ${id}`)
     .then( result => {
@@ -47,7 +47,7 @@ Router.get('/:id', (req, res) => {
 });
 
 //ADD 
-Router.post('/new', (req, res) => {
+Router.post('/gallery/new', (req, res) => {
   const gallery = req.body;
   knex.raw(`INSERT INTO gallery (author_id, link, description) VALUES ('${gallery.author_id}', '${gallery.link}', '${gallery.description}')`)
     .then( results =>  {
@@ -60,7 +60,7 @@ Router.post('/new', (req, res) => {
 });
 
 //REMOVE  
-Router.delete('/:id', (req, res) => {
+Router.delete('/gallery/:id', (req, res) => {
   const { id } = req.params;
   knex.raw(`DELETE FROM gallery WHERE id = ${id}`)
     .then( result => {
@@ -72,7 +72,7 @@ Router.delete('/:id', (req, res) => {
 });
 
 //EDIT  
-Router.put('/:id', (req, res) => {
+Router.put('/gallery/:id', (req, res) => {
   const { id } = req.params;
   const gallery = req.body;
   knex.raw(`UPDATE gallery SET author_id = '${gallery.author_id}', link = ${gallery.link}, description = ${gallery.description} WHERE id = ${id}`)
