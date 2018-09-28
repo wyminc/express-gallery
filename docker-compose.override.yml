@@ -1,7 +1,7 @@
 version: '3'
 services:
   bookshelf-auth-demo:
-    image: wyminc/express-gallery:${IMAGE_VERSION}-local
+    image: itzymin/express-gallery:${IMAGE_VERSION}-local
     depends_on:
       - db
     command: ["./node_modules/.bin/nodemon", "server.js"]
