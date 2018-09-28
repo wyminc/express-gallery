@@ -2,6 +2,9 @@ const express = require('express');
 const Router = express.Router();
 const knex = require('../knex/knex.js');
 
+const Authors = require('./knex/models/Authors');
+const Gallery = require('./knex/models/Gallery');
+
 //RENDER ALL
 Router.get('/', (req, res) => {
   knex.raw(`SELECT * FROM gallery`)

@@ -7,7 +7,7 @@ const PORT = process.env.EXPRESS_CONTAINER_PORT;
 
 const galleryRoute = require('./routes/gallery.js');
 
-app.engine('.hbs', exphbs({defaultLayout: 'layout', extname: '.hbs'}));
+app.engine('.hbs', exphbs({ defaultLayout: 'layout', extname: '.hbs' }));
 app.set('view engine', '.hbs');
 console.log('   connected engine/set');
 
