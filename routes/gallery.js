@@ -83,13 +83,22 @@ Router.post('/gallery/new', (req, res) => {
 //REMOVE  
 Router.delete('/gallery/:id', (req, res) => {
   const { id } = req.params;
-  knex.raw(`DELETE FROM gallery WHERE id = ${id}`)
-    .then(result => {
-      res.redirect('/');
+  gallery 
+    .where({id})
+    .destroy()
+    .then( result => {
+      res.redirect('/')
     })
-    .catch(err => {
-      console.log('error', err);
-    });
+    .catch( err => {
+      res.json(err);
+    })
+  // knex.raw(`DELETE FROM gallery WHERE id = ${id}`)
+  //   .then(result => {
+  //     res.redirect('/');
+  //   })
+  //   .catch(err => {
+  //     console.log('error', err);
+  //   });
 });
 
 //EDIT  
