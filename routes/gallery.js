@@ -33,14 +33,17 @@ Router.get('/gallery/new', (req, res) => {
 });
 
 Router.get('/gallery/:id/edit', (req, res) => {
-  const { id } = req.params;
-  knex.raw(`SELECT * FROM gallery WHERE id = ${id}`)
-    .then(result => {
-      const itemToEdit = result.rows[0]
-      res.render('edit', { itemToEdit });
+  const { id: idString } = req.params;
+  const id = parseInt(idString);
+  gallery
+    .where({ id })
+    .fetch()
+    .then(image => {
+      const itemToEdit = image.attributes;
+      res.render("edit", { itemToEdit });
     })
     .catch(err => {
-      console.log('error', err)
+      res.json('error', err)
     })
 });
 
