@@ -1,9 +1,9 @@
 const bookshelf = require('./bookshelf')
 
-const Authors = bookshelf.Model.extend({
+const authors = bookshelf.Model.extend({
   tableName: 'authors',
-  idAttribute: 'authors_id',
+  idAttribute: 'id',
   hasTimestamps: true
 })
 
-module.exports = Authors
+module.exports = authors

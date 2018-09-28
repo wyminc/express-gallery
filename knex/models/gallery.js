@@ -1,8 +1,12 @@
-const bookshelf = require('./bookshelf')
+const bookshelf = require('./bookshelf');
+const authors = require("./authors");
 
 const gallery = bookshelf.Model.extend({
   tableName: 'gallery',
-  idAttribute: 'gallery_id',
+  author_id: function () {
+    return this.belongsTo(authors, 'author_id');
+  },
+  idAttribute: 'id',
   hasTimestamps: true
 })
 

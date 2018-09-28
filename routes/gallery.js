@@ -2,29 +2,20 @@ const express = require('express');
 const Router = express.Router();
 const knex = require('../knex/knex.js');
 
-const authors = require('../knex/models/authors');
-const gallery = require('../knex/models/gallery');
+const authors = require('../knex/models/authors.js');
+const gallery = require('../knex/models/gallery.js');
 
 //RENDER ALL
 Router.get('/', (req, res) => {
   gallery
-  .fetchAll()
-  .then( gallery => {
-    const items = gallery.serialize()
-    console.log(items);
-    res.render("gallery", { items })
-  })
-  .catch( err => {
-    res.json(err);
-  })
-  // knex.raw(`SELECT * FROM gallery`)
-  //   .then(result => {
-  //     const gallery = result.rows
-  //     res.render('gallery', { gallery });
-  //   })
-  //   .catch(err => {
-  //     console.log('error', err);
-  //   });
+    .fetchAll()
+    .then(gallery => {
+      const items = gallery.toJSON()
+      res.render("gallery", { items })
+    })
+    .catch(err => {
+      res.json(err);
+    })
 });
 
 //RENDER FORM 
@@ -49,15 +40,20 @@ Router.get('/gallery/:id/edit', (req, res) => {
 
 //RENDER DETAIL 
 Router.get('/gallery/:id', (req, res) => {
-  console.log('start render detail')
-  const { id } = req.params;
-  knex.raw(`SELECT * FROM gallery WHERE id = ${id}`)
-    .then(result => {
-      const gallery = result.rows[0]
+  const { id: idString } = req.params;
+  const id = parseInt(idString);
+  gallery
+    .forge()
+    .where({ id })
+    .fetch({ withRelated: ["author_id"] })
+    .then(results => {
+      const authorName = results.relations.author_id.attributes.author_name;
+      const gallery = results.attributes;
+      gallery.authorName = authorName;
       res.render('gallery-detail', gallery);
     })
     .catch(err => {
-      console.log('error', err);
+      res.json('error', err);
     });
 });
 
