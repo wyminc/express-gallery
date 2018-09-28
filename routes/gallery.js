@@ -89,12 +89,27 @@ Router.post('/gallery/new', (req, res) => {
 
 //REMOVE  
 Router.delete('/gallery/:id', (req, res) => {
-  const { id } = req.params;
+  let { id } = req.params;
   gallery
     .where({ id })
-    .destroy()
-    .then(result => {
-      res.redirect('/')
+    .fetch({ withRelated: ["author_id"] })
+    .then(results => {
+      return results.attributes.author_id;
+    })
+    .then(results => {
+      authorId = results
+      gallery
+        .where({ id })
+        .destroy()
+        .then(results => {
+          id = authorId;
+          authors
+            .where({ id })
+            .destroy()
+            .then(results => {
+              res.redirect("/");
+            })
+        })
     })
     .catch(err => {
       res.json(err);
@@ -119,7 +134,7 @@ Router.put('/gallery/:id', (req, res) => {
       const authorInfo = {
         author_name: info.author_name
       };
-      let id = results.attributes.author_id;
+      id = results.attributes.author_id;
       authors
         .where({ id })
         .fetch()
