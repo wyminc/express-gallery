@@ -99,13 +99,6 @@ Router.delete('/gallery/:id', (req, res) => {
     .catch( err => {
       res.json(err);
     })
-  // knex.raw(`DELETE FROM gallery WHERE id = ${id}`)
-  //   .then(result => {
-  //     res.redirect('/');
-  //   })
-  //   .catch(err => {
-  //     console.log('error', err);
-  //   });
 });
 
 //EDIT  
