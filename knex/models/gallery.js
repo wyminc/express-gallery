@@ -1,9 +1,9 @@
 const bookshelf = require('./bookshelf')
 
-const Gallery = bookshelf.Model.extend({
+const gallery = bookshelf.Model.extend({
   tableName: 'gallery',
   idAttribute: 'gallery_id',
   hasTimestamps: true
 })
 
-module.exports = Gallery
+module.exports = gallery
