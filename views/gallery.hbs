@@ -1,0 +1,20 @@
+{{log}}
+{{log 'start gallery.hbs'}}
+
+<h1>Gallery:</h1>
+<br>
+{{#each gallery}}
+  <div>
+    <h2>
+      <a href="/gallery/{{id}}">{{gallery}}</a>
+    </h2>
+  </div>
+{{/each}}
+
+<br>
+<br>
+<a href="/gallery/new">ADD GALLERY ITEM</a>
+
+<br>
+<br>
+{{> footer}}

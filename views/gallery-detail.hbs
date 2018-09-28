@@ -1,0 +1,27 @@
+{{log}}
+{{log 'start gallery-detail.hbs'}}
+
+<h1>Author: {{author_name}}</h1>
+<br>
+<h2>Link: {{link}}</h2>
+<br>
+<h2>Description: {{description}}</h2>
+<br>
+<h2>Id: {{id}}</h2>
+<br>
+<br>
+
+<form method='post' action='/gallery/{{id}}?_method=DELETE'>
+  <button type="submit">Delete Gallery item</button>
+</form>
+
+<br>
+<a href="/gallery/{{id}}/edit">Edit Gallery item</a>
+
+<br>
+<br>
+<a href="/gallery">Gallery Home</a>
+
+<br>
+<br>
+{{> footer}}
