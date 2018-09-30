@@ -1,19 +1,19 @@
 const router = require('express').Router();
-const Users = require('../db/models/Users');
+const Users = require('../knex/models/users');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const bcrypt = require('bcrypt');
 
 passport.serializeUser( (user, done) => {
-  console.log('serializeUser', user)
+  console.log('>>> serializeUser =', user)
   done(null, {
     email: user.email,
-    zomg: 'randomData'
+    password: user.password
   })
 })
 
 passport.deserializeUser( (user, done) => {
-  console.log('deserializing User', user)
+  console.log('>>> deserializing User =', user)
   Users
     .where({email: user.email})
     .fetch()
@@ -27,12 +27,12 @@ passport.deserializeUser( (user, done) => {
 })
 
 passport.use(new LocalStrategy({usernameField: 'email'}, (email, password, done) => {
-  console.log('local is being called')
+  console.log('>>> local is being called')
   Users
     .where({email})
     .fetch()
     .then( user => {
-      console.log('user in local strategy', user)
+      console.log('>>> user in local strategy =', user)
       user = user.toJSON();
       // if (user.password === password) {
       //   done(null, user )
@@ -62,11 +62,11 @@ router.post('/auth/register', (req, res) => {
 
   bcrypt.genSalt(12)
     .then( salt => {
-      console.log('salt', salt)
+      console.log('>>> salt =', salt)
       return bcrypt.hash(password, salt)
     })
     .then( hash => {
-      console.log('hash', hash)
+      console.log('>>> hash =', hash)
       return Users 
                 .forge({email, password: hash})
                 .save()
@@ -84,10 +84,10 @@ router.post('/auth/register', (req, res) => {
     })
 })
 
-router.post('/auth/login', passport.authenticate('local', {failureRedirect: '/'}), (req, res) => {
+router.post('/auth/login', (req, res) => {
   // grab the user on record
   // compare req.body.password to password on record
-
+  console.log('this is posting!!!! YAY!!!')
   res.send('YAY IM IN!!!!')
 })
 
