@@ -12,17 +12,18 @@ const PORT = process.env.EXPRESS_CONTAINER_PORT;
 const galleryRoute = require('./routes/gallery.js');
 const authRoutes = require('./routes/auth.js');
 
-app.use(methodOverride("_method"));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
-  store: new RedisStore(),
+  store: new RedisStore({url: 'redis://redis:6379', logErrors: true}),
   secret: 'p1',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: true
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(methodOverride("_method"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.engine('.hbs', exphbs({ defaultLayout: 'layout', extname: '.hbs' }));
 app.set('view engine', '.hbs');
@@ -33,8 +34,8 @@ console.log('   connected engine/set');
   //   res.json("Hi");
   // })
   
-app.use('/', galleryRoute)
 app.use('/', authRoutes);
+app.use('/', galleryRoute)
 
 app.get('*', (req, res) => {
   res.json('404 error');

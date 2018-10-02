@@ -4,6 +4,7 @@ services:
     image: itzymin/express-gallery:${IMAGE_VERSION}-local
     depends_on:
       - db
+      - redis
     command: ["./node_modules/.bin/nodemon", "server.js"]
     container_name: express-gallery
     volumes:
