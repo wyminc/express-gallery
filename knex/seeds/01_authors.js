@@ -1,20 +1,20 @@
 
-exports.seed = function(knex, Promise) {
+exports.seed = function (knex, Promise) {
   // Deletes ALL existing entries
   return knex('authors').del()
     .then(function () {
       // Inserts seed entries
       return knex('authors').insert([
-        {author_name: 'Suzanne Collins'},
-        {author_name: 'J.K. Rowlings'},
-        {author_name: 'Ass McGee'},
-        {author_name: 'Tony Tiger'},
-        {author_name: 'Winnie Pooh'},
-        {author_name: 'Buzz Lightyear'},
-        {author_name: 'Karl Marx'},
-        {author_name: 'Windy Wendy'},
-        {author_name: 'Cpt America'},
-        {author_name: 'Thor Odinson'},
+        { author_name: 'Tore Dahlström' },
+        { author_name: 'Ulla Strömberg' },
+        { author_name: 'Håkan Jacobsson' },
+        { author_name: 'Anne Gunnarsson' },
+        { author_name: 'Ernst Stenmark' },
+        { author_name: 'Anja Mattson' },
+        { author_name: 'Katri Syrén' },
+        { author_name: 'Öne Nilsson' },
+        { author_name: 'Emely Mörner' },
+        { author_name: 'Vilhelmina Östlund' },
       ]);
     });
 };

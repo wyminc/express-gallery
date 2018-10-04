@@ -21,13 +21,14 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(express.static("public"));
+
 app.use(methodOverride("_method"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.engine('.hbs', exphbs({ defaultLayout: 'layout', extname: '.hbs' }));
 app.set('view engine', '.hbs');
-console.log('   connected engine/set');
 
 // app.get("/", (req, res) => {
   //   console.log('start server.js');
@@ -35,6 +36,8 @@ console.log('   connected engine/set');
   // })
   
 app.use('/', authRoutes);
+console.log('   connected engine/set');
+
 app.use('/', galleryRoute)
 
 app.get('*', (req, res) => {

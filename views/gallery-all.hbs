@@ -1,0 +1,34 @@
+{{log}}
+{{log 'start gallery.hbs'}}
+
+<div id="logoContainer">
+  <a href="/" id="logo2">_ARCHITEKT</a>
+</div>
+
+<div id="searchDiv">
+  <img src="/assets/search-icon.png" alt="" id="searchIcon">
+  <form action="/search" method="post">
+    <input type="search" id="searchBar" placeholder="Search by Name of Image" name="name">
+  </form>
+</div>
+
+{{#if items}}
+<div id="galleryContainer" style="margin-top: 4vh">
+  {{#each items}}
+  <div id="individual{{id}}" class="galleryItems">
+    <a href="/gallery/{{id}}"><img src={{link}} class="individualImage"></a>
+  </div>
+  {{/each}}
+</div>
+{{/if}}
+
+<div id="dropdownPage" class="dropdown">
+  <button class="dropbtn">&equiv;</button>
+  <div class="dropdown-content">
+    <a href="/gallery">Gallery</a>
+    <a href="/about">About</a>
+    <a href="/auth">Log In</a>
+  </div>
+</div>
+
+<a href="/gallery/new">ADD GALLERY ITEM</a>

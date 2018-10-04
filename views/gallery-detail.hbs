@@ -1,15 +1,46 @@
 {{log}}
 {{log 'start gallery-detail.hbs'}}
 
-<h1>Author: {{authorName}}</h1>
-<br>
-<img src={{link}}></img>
-<br>
-<h2>Description: {{description}}</h2>
-<br>
-<br>
-<br>
+<div id="logoContainer">
+  <a href="/" id="logo2">_ARCHITEKT</a>
+</div>
 
+<div id="searchDiv">
+  <img src="/assets/search-icon.png" alt="" id="searchIcon">
+  <form action="/search" method="post">
+    <input type="search" id="searchBar" placeholder="Search by Name of Image" name="name">
+  </form>
+</div>
+
+<div id="detailedContainer">
+  {{#with detailed}}
+  <h1 id="detailedLine">{{description}} - {{authorName}}</h1>
+  <img src={{link}} id="detailedImage"></img>
+  {{/with}}
+</div>
+
+
+<div id="gallerySidebar">
+  {{#each sideGallery}}
+  <div id="individual{{id}}" class="galleryItems">
+    <a href="/gallery/{{id}}"><img src={{link}} class="individualImage" style="margin: 0 1vw 0 2vw"></a>
+  </div>
+  {{/each}}
+</div>
+
+
+
+<div id="dropdownPage" class="dropdown">
+  <button class="dropbtn">&equiv;</button>
+  <div class="dropdown-content">
+    <a href="/gallery">Gallery</a>
+    <a href="/about">About</a>
+    <a href="/auth">Log In</a>
+  </div>
+</div>
+
+
+{{!--
 <form method='post' action='/gallery/{{id}}?_method=DELETE'>
   <button type="submit">Delete Gallery item</button>
 </form>
@@ -22,5 +53,5 @@
 <a href="/">Gallery Home</a>
 
 <br>
-<br>
-{{> footer}}
+<br> --}}
+{{!-- {{> footer}} --}}
