@@ -1,4 +1,4 @@
-const router = require('express').Router();
+const Router = require('express').Router();
 const Users = require('../knex/models/users.js');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -66,9 +66,13 @@ passport.use(new LocalStrategy({usernameField: 'email'}, (email, password, done)
 }))
 
 
+Router.get('/auth/register', (req, res) => {
+  res.render('register')
+})
+
 const SALT_ROUND = 12
 
-router.post('/auth/register', (req, res) => {
+Router.post('/auth/register', (req, res) => {
   const { email, password } = req.body;
   bcrypt.genSalt(12)
     .then( salt => {
@@ -78,15 +82,15 @@ router.post('/auth/register', (req, res) => {
     .then( hash => {
       console.log('>>> hash =', hash)
       return Users 
-                .forge({email, password: hash})
-                .save()
+        .forge({email, password: hash})
+        .save()
     })
     .then( user => {
       if (user) {
-        res.send('NEW USAR MADE!!!!')
+        res.redirect('/gallery')
       }
       else{
-        res.send('SOME ERRAR MAKING USAR!!!!')
+        res.redirect('/auth/register')
       }
     })
     .catch( err => {
@@ -95,19 +99,19 @@ router.post('/auth/register', (req, res) => {
     })
 })
 
-router.post('/auth/login', passport.authenticate('local', {failureRedirect: '/'}), (req, res) => {
+Router.post('/auth/login', passport.authenticate('local', {failureRedirect: '/'}), (req, res) => {
   console.log('this is posting!!!! YAY!!!')
-  res.send('YAY AUTHENTICATED, IM IN !!!!')
+  res.redirect('/gallery')
 })
 
-//router.post('/auth/login/google', passport.authenticate('google'))
+//Router.post('/auth/login/google', passport.authenticate('google'))
 
-router.post('/auth/logout', (req, res) => {
+Router.post('/auth/logout', (req, res) => {
   req.logout()
   res.redirect('/')
 })
 
-router.get('/auth/protected', isAuthenticated, (req, res) => {
+Router.get('/auth/protected', isAuthenticated, (req, res) => {
   res.render('gallery', { user: req.user } )
   // if (req.isAuthenticated()) {
   //   console.log('>>> REQ.USER', req.user)
@@ -118,7 +122,7 @@ router.get('/auth/protected', isAuthenticated, (req, res) => {
   // }
 })
 
-router.get('/auth/secret',isAuthenticated, (req, res) => { 
+Router.get('/auth/secret',isAuthenticated, (req, res) => { 
   res.send('YOU HAVE FOUND DA SEKRET')
 })
 
@@ -130,4 +134,4 @@ function isAuthenticated(req, res, done) {
   }
 }
 
-module.exports = router;
+module.exports = Router;
