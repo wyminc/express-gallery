@@ -65,6 +65,13 @@ passport.use(new LocalStrategy({usernameField: 'email'}, (email, password, done)
     })
 }))
 
+Router.get('/auth/register', (req, res) => {
+  res.render('register')
+})
+
+Router.get('/auth/login', (req, res) => {
+  res.render('login')
+})
 
 const SALT_ROUND = 12
 
@@ -95,7 +102,7 @@ router.post('/auth/register', (req, res) => {
     })
 })
 
-router.post('/auth/login', passport.authenticate('local', {failureRedirect: '/'}), (req, res) => {
+Router.post('/auth/login', passport.authenticate('local', {failureRedirect: '/login'}), (req, res) => {
   console.log('this is posting!!!! YAY!!!')
   res.send('YAY AUTHENTICATED, IM IN !!!!')
 })
