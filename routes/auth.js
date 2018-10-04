@@ -65,6 +65,8 @@ passport.use(new LocalStrategy({usernameField: 'email'}, (email, password, done)
     })
 }))
 
+
+//RENDER FORM
 Router.get('/auth/register', (req, res) => {
   res.render('register')
 })
@@ -73,10 +75,8 @@ Router.get('/auth/login', (req, res) => {
   res.render('login')
 })
 
-Router.get('/auth/register', (req, res) => {
-  res.render('register')
-})
 
+//REGISTER
 const SALT_ROUND = 12
 
 Router.post('/auth/register', (req, res) => {
@@ -106,21 +106,24 @@ Router.post('/auth/register', (req, res) => {
     })
 })
 
-<<<<<<< HEAD
-Router.post('/auth/login', passport.authenticate('local', {failureRedirect: '/'}), (req, res) => {
-=======
+
+//LOGIN
 Router.post('/auth/login', passport.authenticate('local', {failureRedirect: '/login'}), (req, res) => {
->>>>>>> login
   console.log('this is posting!!!! YAY!!!')
   res.redirect('/gallery')
 })
 
 //Router.post('/auth/login/google', passport.authenticate('google'))
 
-Router.post('/auth/logout', (req, res) => {
+
+//LOGOUT
+Router.get('/auth/logout', (req, res) => {
   req.logout()
+  console.log('logged out ready to redirect to /')
   res.redirect('/')
+  console.log('redirecting to / because logged out')
 })
+
 
 Router.get('/auth/protected', isAuthenticated, (req, res) => {
   res.render('gallery', { user: req.user } )
