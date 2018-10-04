@@ -1,0 +1,25 @@
+{{log}}
+{{log 'start gallery-form.hbs'}}
+
+<form action="/gallery" method="post">
+  <h3>
+    <label>LOGIN:</label>
+  </h3>
+  <label>email:
+    <input type="text" name="email" id="" required>
+  </label>
+  <br>
+  <br>
+  <label>password: 
+    <input type="password" name="password" id="" required>
+  </label>
+  <br>
+  <br>
+  <label>
+    <input type="submit" value="Submit">
+  </label>
+</form>
+
+<br>
+<br>
+{{> footer}}
