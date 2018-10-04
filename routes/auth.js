@@ -65,6 +65,13 @@ passport.use(new LocalStrategy({usernameField: 'email'}, (email, password, done)
     })
 }))
 
+Router.get('/auth/register', (req, res) => {
+  res.render('register')
+})
+
+Router.get('/auth/login', (req, res) => {
+  res.render('login')
+})
 
 Router.get('/auth/register', (req, res) => {
   res.render('register')
@@ -99,7 +106,11 @@ Router.post('/auth/register', (req, res) => {
     })
 })
 
+<<<<<<< HEAD
 Router.post('/auth/login', passport.authenticate('local', {failureRedirect: '/'}), (req, res) => {
+=======
+Router.post('/auth/login', passport.authenticate('local', {failureRedirect: '/login'}), (req, res) => {
+>>>>>>> login
   console.log('this is posting!!!! YAY!!!')
   res.redirect('/gallery')
 })
