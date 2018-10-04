@@ -10,6 +10,22 @@ let random = (arr) => {
   return Math.floor(Math.random() * arr.length);
 }
 
+//Finding index of an object inside an array of objects
+let index = (arr, obj) => {
+  return arr.map(element => {
+    return element.id
+  }).indexOf(obj.id)
+}
+
+//True/False using the index function made above
+let found = (arr, obj) => {
+  if (index(arr, obj) === -1) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 //RENDER HOME PAGE
 Router.get("/", (req, res) => {
   gallery
@@ -46,6 +62,37 @@ Router.get('/gallery', (req, res) => {
     })
 });
 
+//RENDER SEARCH RESULTS PAGE
+Router.post("/search", (req, res) => {
+  const info = req.body;
+  const name = (info.name).toLowerCase();
+  gallery
+    .query(function (qb) {
+      qb.whereRaw(`LOWER(description) LIKE ?`, [`%${name}%`])
+    })
+    .fetchAll()
+    .then(results => {
+      if ((results.toJSON()).length) {
+        const items = results.toJSON();
+        res.render("gallery-all", { items })
+      } else if (results.toJSON().length == 0) {
+        res.render("gallery-all");
+      } else {
+        let items = [];
+        items.push(results.toJSON());
+        res.render("gallery-all", { items });
+      }
+    })
+    .catch(err => {
+      res.json(err);
+    })
+})
+
+//RENDER ABOUT PAGE
+Router.get("/about", (req, res) => {
+  res.render("about");
+})
+
 //RENDER FORM 
 Router.get('/gallery/new', (req, res) => {
   res.render('gallery-form');
@@ -79,7 +126,22 @@ Router.get('/gallery/:id', (req, res) => {
       const authorName = results.relations.author_id.attributes.author_name;
       const gallery = results.attributes;
       gallery.authorName = authorName;
-      res.render('gallery-detail', gallery);
+      return gallery;
+    })
+    .then(results => {
+      let imgObj = {};
+      imgObj.detailed = results;
+      gallery
+        .fetchAll()
+        .then(results => {
+          imgObj.sideGallery = results.toJSON();
+          if (found(imgObj.sideGallery, imgObj.detailed)) {
+            (imgObj.sideGallery).splice(index(imgObj.sideGallery, imgObj.detailed), 1);
+            res.render('gallery-detail', imgObj);
+          } else {
+            res.render('gallery-detail', imgObj);
+          }
+        })
     })
     .catch(err => {
       res.json('error', err);
