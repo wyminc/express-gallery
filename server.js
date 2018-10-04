@@ -8,17 +8,15 @@ const PORT = process.env.EXPRESS_CONTAINER_PORT;
 
 const galleryRoute = require('./routes/gallery.js');
 
+app.use(express.static("public"));
+
 app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.engine('.hbs', exphbs({ defaultLayout: 'layout', extname: '.hbs' }));
 app.set('view engine', '.hbs');
-console.log('   connected engine/set');
 
-// app.get("/", (req, res) => {
-//   console.log('start server.js');
-//   res.json("Hi");
-// })
+console.log('   connected engine/set');
 
 app.use('/', galleryRoute)
 

@@ -5,13 +5,41 @@ const knex = require('../knex/knex.js');
 const authors = require('../knex/models/authors.js');
 const gallery = require('../knex/models/gallery.js');
 
+//Random # Generator
+let random = (arr) => {
+  return Math.floor(Math.random() * arr.length);
+}
+
+//RENDER HOME PAGE
+Router.get("/", (req, res) => {
+  gallery
+    .fetchAll()
+    .then(results => {
+      const imageArr = results.toJSON();
+      const arrLength = imageArr.length;
+      const number = random(imageArr);
+      const randomImage = imageArr[number];
+      if (number < (arrLength - 1)) {
+        const imageObj = { frontPage: randomImage };
+        imageObj.links = imageArr;
+        imageObj.counter = { length: arrLength, showId: `0${randomImage.id}` };
+        res.render("gallery", imageObj);
+      } else {
+        const imageObj = { frontPage: randomImage };
+        imageObj.links = imageArr;
+        imageObj.counter = { length: arrLength, showId: `${randomImage.id}` };
+        res.render("gallery", imageObj);
+      }
+    })
+})
+
 //RENDER ALL
-Router.get('/', (req, res) => {
+Router.get('/gallery', (req, res) => {
   gallery
     .fetchAll()
     .then(gallery => {
       const items = gallery.toJSON()
-      res.render("gallery", { items })
+      res.render("gallery-all", { items })
     })
     .catch(err => {
       res.json(err);
@@ -92,24 +120,9 @@ Router.delete('/gallery/:id', (req, res) => {
   let { id } = req.params;
   gallery
     .where({ id })
-    .fetch({ withRelated: ["author_id"] })
+    .destroy()
     .then(results => {
-      return results.attributes.author_id;
-    })
-    .then(results => {
-      authorId = results
-      gallery
-        .where({ id })
-        .destroy()
-        .then(results => {
-          id = authorId;
-          authors
-            .where({ id })
-            .destroy()
-            .then(results => {
-              res.redirect("/");
-            })
-        })
+      res.redirect("/");
     })
     .catch(err => {
       res.json(err);
