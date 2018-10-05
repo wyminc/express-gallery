@@ -1,7 +1,7 @@
 const Router = require('express').Router();
 const Users = require('../knex/models/users.js');
 const passport = require('passport');
-const LocalStrategy = require('passport-local');
+const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 
 passport.serializeUser( (user, done) => {
@@ -17,10 +17,11 @@ passport.serializeUser( (user, done) => {
 passport.deserializeUser( (user, done) => {
   console.log('>>> deserializing User =', user)
   Users
-    .where({user_id: user.id})
+    .where({email: user.email})
     .fetch()
     .then( user => {
-      done(null, user.attributes)
+      user = user.toJSON();
+      done(null, user)
       // const whateverIWant = {
       //   email: user.attributes.email,
       //   id: user.id,
@@ -41,23 +42,29 @@ passport.use(new LocalStrategy({usernameField: 'email'}, (email, password, done)
     .fetch()
     .then( user => {
       console.log('>>> user in local strategy =', user)
-      bcrypt.compare(password, user.attributes.password)
-        .then( result => {
-          console.log('>>> local strategy password =', password)
-          console.log('>>> local strategy user.attributes.password =', user.attributes.password)
-          console.log('>>> local strategy result =', result)
-          if (result) {
-            console.log('>>> local strategy result true =', result)
-            done(null, user.attributes)
-          } else {
-            console.log('>>> local strategy else result false =', result)
+      if (user === null) {
+        return done(null, false, { message: 'Incorrect email or password' })
+      }
+      else {
+        user = user.toJSON();
+        bcrypt.compare(password, user.password)
+          .then( result => {
+            console.log('>>> local strategy password =', password)
+            console.log('>>> local strategy user.attributes.password =', user.password)
+            console.log('>>> local strategy result =', result)
+            if (result) {
+              console.log('>>> local strategy result true =', result)
+              return done(null, user)
+            } else {
+              console.log('>>> local strategy else result false =', result)
+              return done(null, false, { message: 'Incorrect email or password' })
+            }
+          })
+          .catch( err => {
+            console.log('error', err)
             done(null, false)
-          }
-        })
-        .catch( err => {
-          console.log('error', err)
-          done(err)
-        })
+          })
+      }
     })
     .catch( err => {
       console.log('error', err)
@@ -108,9 +115,9 @@ Router.post('/auth/register', (req, res) => {
 
 
 //LOGIN
-Router.post('/auth/login', passport.authenticate('local', {failureRedirect: '/login'}), (req, res) => {
-  console.log('this is posting!!!! YAY!!!')
-  res.redirect('/gallery')
+Router.post('/auth/login', passport.authenticate('local', {successRedirect: '/gallery', failureRedirect: '/auth/login'}), (req, res) => {
+  console.log('>>> this is posting!!!! YAY!!!')
+  // res.redirect('/auth/protected')
 })
 
 //Router.post('/auth/login/google', passport.authenticate('google'))
@@ -126,7 +133,7 @@ Router.get('/auth/logout', (req, res) => {
 
 
 Router.get('/auth/protected', isAuthenticated, (req, res) => {
-  res.render('gallery', { user: req.user } )
+  res.redirect('/gallery', { user: req.user } )
   // if (req.isAuthenticated()) {
   //   console.log('>>> REQ.USER', req.user)
   //   res.send('JOO SHALL PASS!!!')
@@ -137,7 +144,7 @@ Router.get('/auth/protected', isAuthenticated, (req, res) => {
 })
 
 Router.get('/auth/secret',isAuthenticated, (req, res) => { 
-  res.send('YOU HAVE FOUND DA SEKRET')
+  res.send('>>> YOU HAVE FOUND DA SEKRET')
 })
 
 function isAuthenticated(req, res, done) {

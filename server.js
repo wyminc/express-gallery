@@ -34,14 +34,13 @@ app.set('view engine', '.hbs');
   //   console.log('start server.js');
   //   res.json("Hi");
   // })
-  
-app.use('/', authRoutes);
 console.log('   connected engine/set');
 
 app.use('/', galleryRoute)
+app.use('/', authRoutes);
 
 app.get('*', (req, res) => {
-  res.json('404 error');
+  res.json('404 error, this is the last item before app.listen on the server.js file');
 })
 
 app.listen(PORT, () => {
