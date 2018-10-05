@@ -1,6 +1,17 @@
 {{log}}
 {{log 'start gallery-detail.hbs'}}
 
+{{!--
+<script type="text/javascript">
+  function affirm(form) {
+    if (confirm('Do you really want to delete this beautiful image?')) {
+      form.submit();
+    } else {
+      return false;
+    }
+  }
+</script> --}}
+
 <div id="logoContainer">
   <a href="/" id="logo2">_ARCHITEKT</a>
 </div>
@@ -12,12 +23,30 @@
   </form>
 </div>
 
+
+{{#if login}}
+<div id="detailedContainerLog">
+  {{#with detailed}}
+  <h1 id="detailedLine">{{description}} - {{authorName}}</h1>
+
+  <img src={{link}} id="detailedImageLog"></img>
+
+  <a href="/gallery/{{id}}/edit"><img src="/assets/pencil.png" alt="" id="pencilIcon"></a>
+
+  <form method='post' action='/gallery/{{id}}?_method=DELETE' id="eraserIcon">
+    <input type="image" src="/assets/eraser.png" id="eraser" onClick="affirm(this.form);" />
+  </form>
+  {{/with}}
+</div>
+{{else}}
 <div id="detailedContainer">
   {{#with detailed}}
   <h1 id="detailedLine">{{description}} - {{authorName}}</h1>
+
   <img src={{link}} id="detailedImage"></img>
   {{/with}}
 </div>
+{{/if}}
 
 
 <div id="gallerySidebar">
@@ -35,23 +64,11 @@
   <div class="dropdown-content">
     <a href="/gallery">Gallery</a>
     <a href="/about">About</a>
-    <a href="/auth">Log In</a>
+    {{#if login}}
+    <a href="/gallery/new">Add Image</a>
+    <a href="/auth/logout">Logout</a>
+    {{else}}
+    <a href="/auth/login">Login</a>
+    {{/if}}
   </div>
 </div>
-
-
-{{!--
-<form method='post' action='/gallery/{{id}}?_method=DELETE'>
-  <button type="submit">Delete Gallery item</button>
-</form>
-
-<br>
-<a href="/gallery/{{id}}/edit">Edit Gallery item</a>
-
-<br>
-<br>
-<a href="/">Gallery Home</a>
-
-<br>
-<br> --}}
-{{!-- {{> footer}} --}}

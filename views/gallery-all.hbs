@@ -27,7 +27,12 @@
   <div class="dropdown-content">
     <a href="/gallery">Gallery</a>
     <a href="/about">About</a>
-    <a href="/auth/logout">LogOut</a>
+    {{#if login}}
+    <a href="/gallery/new">Add Image</a>
+    <a href="/auth/logout">Logout</a>
+    {{else}}
+    <a href="/auth/login">Login</a>
+    {{/if}}
   </div>
 </div>
 

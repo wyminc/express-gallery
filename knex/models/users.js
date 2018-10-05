@@ -1,15 +1,10 @@
 const bookshelf = require('./bookshelf');
 
-const registrar = bookshelf.Model.extend({
-  tableName: 'user',
+const users = bookshelf.Model.extend({
+  tableName: 'users',
   idAttribute: 'user_id',
-  hasTimestamps: true 
+  hasTimestamps: true
 })
 
-// class Users extends bookshelf.Model {
-//   get tableName() {return 'user'}
-//   get idAttribute() {return 'user_id'}
-//   get hasTimestamps() {return true}
-// }
 
-module.exports = registrar;
+module.exports = users;

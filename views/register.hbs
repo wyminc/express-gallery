@@ -1,25 +1,32 @@
 {{log}}
 {{log 'start register.hbs'}}
 
-<form action="/auth/register" method="post">
+<div id="logoContainer">
+  <a href="/" id="logo2">_ARCHITEKT</a>
+</div>
+
+<div id="dropdownPage" class="dropdown">
+  <button class="dropbtn">&equiv;</button>
+  <div class="dropdown-content">
+    <a href="/gallery">Gallery</a>
+    <a href="/about">About</a>
+  </div>
+</div>
+
+
+<form action="/auth/register" method="post" id="form" class="authForms">
   <h3>
-    <label>REGISTER:</label>
+    <label>Make an Account</label>
   </h3>
-  <label>email:
-    <input type="text" name="email" id="" required>
-  </label>
+  <img src="/assets/box.png" alt="" id="boxIcon">
+  <input type="text" name="email" id="" class="inputBars" placeholder="The Email You Want to Use" required>
   <br>
   <br>
-  <label>password: 
-    <input type="password" name="password" id="" required>
-  </label>
+  <img src="/assets/box.png" alt="" id="boxIcon">
+  <input type="password" name="password" id="" class="inputBars" placeholder="Create a Password" required>
   <br>
   <br>
   <label>
-    <input type="submit" value="Register">
+    <input type="submit" value="Submit" id="submitButton">
   </label>
 </form>
-
-<br>
-<br>
-{{> footer}}

@@ -4,8 +4,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 
-passport.serializeUser( (user, done) => {
-  console.log('>>> serializeUser =', user)
+passport.serializeUser((user, done) => {
   done(null, {
     id: user.user_id,
     email: user.email,
@@ -14,59 +13,45 @@ passport.serializeUser( (user, done) => {
   })
 })
 
-passport.deserializeUser( (user, done) => {
-  console.log('>>> deserializing User =', user)
+passport.deserializeUser((user, done) => {
   Users
-    .where({email: user.email})
+    .where({ email: user.email })
     .fetch()
-    .then( user => {
+    .then(user => {
       user = user.toJSON();
       done(null, user)
-      // const whateverIWant = {
-      //   email: user.attributes.email,
-      //   id: user.id,
-      //   ip: 'mhFake IP here 0.0.0.0'
-      // }
-      // done(null, whateverIWant)
     })
-    .catch( err => {
+    .catch(err => {
       console.log('err', err)
       done(err)
     })
 })
 
-passport.use(new LocalStrategy({usernameField: 'email'}, (email, password, done) => {
-  console.log('>>> local is being called')
+passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
   Users
-    .where({email})
+    .where({ email })
     .fetch()
-    .then( user => {
-      console.log('>>> user in local strategy =', user)
+    .then(user => {
       if (user === null) {
         return done(null, false, { message: 'Incorrect email or password' })
       }
       else {
         user = user.toJSON();
         bcrypt.compare(password, user.password)
-          .then( result => {
-            console.log('>>> local strategy password =', password)
-            console.log('>>> local strategy user.attributes.password =', user.password)
-            console.log('>>> local strategy result =', result)
+          .then(result => {
             if (result) {
-              console.log('>>> local strategy result true =', result)
               return done(null, user)
             } else {
-              console.log('>>> local strategy else result false =', result)
               return done(null, false, { message: 'Incorrect email or password' })
             }
           })
-          .catch( err => {
+          .catch(err => {
             console.log('error', err)
             done(null, false)
           })
       }
     })
-    .catch( err => {
+    .catch(err => {
       console.log('error', err)
       done(err)
     })
@@ -89,25 +74,23 @@ const SALT_ROUND = 12
 Router.post('/auth/register', (req, res) => {
   const { email, password } = req.body;
   bcrypt.genSalt(12)
-    .then( salt => {
-      console.log('>>> salt =', salt)
+    .then(salt => {
       return bcrypt.hash(password, salt)
     })
-    .then( hash => {
-      console.log('>>> hash =', hash)
-      return Users 
-        .forge({email, password: hash})
+    .then(hash => {
+      return Users
+        .forge({ email, password: hash })
         .save()
     })
-    .then( user => {
+    .then(user => {
       if (user) {
         res.redirect('/gallery')
       }
-      else{
+      else {
         res.redirect('/auth/register')
       }
     })
-    .catch( err => {
+    .catch(err => {
       console.log('err', err)
       res.send(err)
     })
@@ -115,37 +98,26 @@ Router.post('/auth/register', (req, res) => {
 
 
 //LOGIN
-Router.post('/auth/login', passport.authenticate('local', {successRedirect: '/gallery', failureRedirect: '/auth/login'}), (req, res) => {
-  console.log('>>> this is posting!!!! YAY!!!')
-  // res.redirect('/auth/protected')
+Router.post('/auth/login', passport.authenticate('local', { failureRedirect: '/auth/login' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
+  delete req.session.returnTo;
 })
-
-//Router.post('/auth/login/google', passport.authenticate('google'))
-
 
 //LOGOUT
 Router.get('/auth/logout', (req, res) => {
   req.logout()
-  console.log('logged out ready to redirect to /')
-  res.redirect('/')
-  console.log('redirecting to / because logged out')
+  if (req.session.returnTo === false) {
+    res.redirect('/')
+  } else {
+    res.redirect(req.session.returnTo || '/');
+  }
 })
 
 
 Router.get('/auth/protected', isAuthenticated, (req, res) => {
-  res.redirect('/gallery', { user: req.user } )
-  // if (req.isAuthenticated()) {
-  //   console.log('>>> REQ.USER', req.user)
-  //   res.send('JOO SHALL PASS!!!')
-  // }
-  // else {
-  //   res.send('NONE SHALL PASSSSS!!!!!')
-  // }
+  res.redirect('/gallery', { user: req.user })
 })
 
-Router.get('/auth/secret',isAuthenticated, (req, res) => { 
-  res.send('>>> YOU HAVE FOUND DA SEKRET')
-})
 
 function isAuthenticated(req, res, done) {
   if (req.isAuthenticated()) {
