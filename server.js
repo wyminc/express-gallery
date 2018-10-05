@@ -33,12 +33,19 @@ console.log('   connected engine/set');
   //   console.log('start server.js');
   //   res.json("Hi");
   // })
+<<<<<<< Updated upstream
   
 app.use('/', authRoutes);
+=======
+
+console.log('   connected engine/set');
+
+>>>>>>> Stashed changes
 app.use('/', galleryRoute)
+app.use('/', authRoutes);
 
 app.get('*', (req, res) => {
-  res.json('404 error');
+  res.json('404 error, this is the last item before app.listen on the server.js file');
 })
 
 app.listen(PORT, () => {
