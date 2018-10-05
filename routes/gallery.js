@@ -5,6 +5,8 @@ const knex = require('../knex/knex.js');
 const authors = require('../knex/models/authors.js');
 const gallery = require('../knex/models/gallery.js');
 
+const isAuthenticated = require('../middleware/authenticated.js');
+
 //Random # Generator
 let random = (arr) => {
   return Math.floor(Math.random() * arr.length);
@@ -27,7 +29,7 @@ let found = (arr, obj) => {
 }
 
 //RENDER HOME PAGE
-Router.get("/", (req, res) => {
+Router.get('/', (req, res) => {
   gallery
     .fetchAll()
     .then(results => {
@@ -63,7 +65,8 @@ Router.get('/gallery', (req, res) => {
 });
 
 //RENDER SEARCH RESULTS PAGE
-Router.post("/search", (req, res) => {
+Router.route('/search')
+  .post(isAuthenticated, (req, res) => {
   const info = req.body;
   const name = (info.name).toLowerCase();
   gallery
@@ -98,7 +101,8 @@ Router.get('/gallery/new', (req, res) => {
   res.render('gallery-form');
 });
 
-Router.get('/gallery/:id/edit', (req, res) => {
+Router.route('/gallery/:id/edit')
+  .get(isAuthenticated, (req, res) => {
   const { id: idString } = req.params;
   const id = parseInt(idString);
   gallery
@@ -149,7 +153,8 @@ Router.get('/gallery/:id', (req, res) => {
 });
 
 //ADD 
-Router.post('/gallery/new', (req, res) => {
+Router.route('/gallery/new')
+  .post(isAuthenticated, (req, res) => {
   const info = req.body;
   const authorInfo = {
     author_name: info.author_name
@@ -178,7 +183,8 @@ Router.post('/gallery/new', (req, res) => {
 });
 
 //REMOVE  
-Router.delete('/gallery/:id', (req, res) => {
+Router.route('/gallery/:id')
+  .delete(isAuthenticated, (req, res) => {
   let { id } = req.params;
   gallery
     .where({ id })
@@ -192,7 +198,8 @@ Router.delete('/gallery/:id', (req, res) => {
 });
 
 //EDIT  
-Router.put('/gallery/:id', (req, res) => {
+Router.route('/gallery/:id')
+  .put(isAuthenticated, (req, res) => {
   let { id } = req.params;
   const info = req.body;
   const galleryInfo = {
