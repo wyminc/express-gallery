@@ -2,8 +2,7 @@ version: '3'
 services:
   express-gallery:
     image: itzymin/express-gallery:${IMAGE_VERSION}
-    env_file: 
-      - production.env
+    env_file: .prod.env
     environment:
       NODE_ENV: production
     depends_on:
@@ -17,8 +16,7 @@ services:
       - my-app-network
   postgres-primary-db:
     image: postgres:10.0-alpine
-    env_file:
-      - production.env
+    env_file: .prod.env
     volumes: 
       - pg-data-volume:/var/lib/postgresql/data
     ports: 
@@ -27,8 +25,7 @@ services:
       - my-app-network
   redis-session-store:
     image: redis:4.0-alpine
-    env_file:
-      - production.env
+    env_file: .prod.env
     volumes:
       - redis-data-volume:/data
     ports:
@@ -37,7 +34,6 @@ services:
       - my-app-network
 
   
-
 volumes: 
   pg-data-volume:
   redis-data-volume:

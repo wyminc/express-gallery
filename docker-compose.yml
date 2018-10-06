@@ -1,5 +1,5 @@
 version: '3'
 services:
-  bookshelf-auth-demo:
+  express-gallery:
     build: .
     image: itzymin/express-gallery:local
