@@ -31,10 +31,10 @@
 
   <img src={{link}} id="detailedImageLog"></img>
 
-  <a href="/gallery/{{id}}/edit"><img src="/assets/pencil.png" alt="" id="pencilIcon"></a>
+  <a href="/gallery/{{id}}/edit"><img src="/assets/pencil.png" alt="" class="pencilIcon"></a>
 
-  <form method='post' action='/gallery/{{id}}?_method=DELETE' id="eraserIcon">
-    <input type="image" src="/assets/eraser.png" id="eraser" onClick="affirm(this.form);" />
+  <form method='post' action='/gallery/{{id}}?_method=DELETE' class="eraserIcon">
+    <input type="image" src="/assets/eraser.png" class="eraser" onClick="affirm(this.form);" />
   </form>
   {{/with}}
 </div>

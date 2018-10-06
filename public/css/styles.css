@@ -211,11 +211,11 @@ a {
 #detailedContainerLog{
   float: left;
   margin-bottom: 2vh;
-  
+
   position: relative;
 }
 
-#pencilIcon {
+#detailedContainerLog .pencilIcon {
   width: 3vw;
   height: auto;
   transition: .5s ease;
@@ -227,7 +227,7 @@ a {
   -ms-transform: translate(-50%, -50%);
 }
 
-#eraserIcon {
+#detailedContainerLog .eraserIcon {
   transition: .5s ease;
   opacity: 0;
   position: absolute;
@@ -237,7 +237,7 @@ a {
   -ms-transform: translate(-50%, -50%);
 }
 
-#eraser{
+#detailedContainerLog .eraser{
   width: 4vw;
   height: auto;
 }
@@ -265,11 +265,11 @@ a {
   opacity: 0.8;
 }
 
-#detailedContainerLog:hover #pencilIcon {
+#detailedContainerLog:hover .pencilIcon {
   opacity: 1;
 }
 
-#detailedContainerLog:hover #eraserIcon {
+#detailedContainerLog:hover .eraserIcon {
   opacity: 1;
 }
 
