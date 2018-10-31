@@ -8,7 +8,7 @@ services:
     depends_on:
       - postgres-primary-db
       - redis-session-store
-    command: ["node", "app.js"]
+    command: ["node", "server.js"]
     container_name: express-gallery
     ports:
       - "${EXPRESS_HOST_PORT}:${EXPRESS_CONTAINER_PORT}"
