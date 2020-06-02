@@ -1,0 +1,77 @@
+{{log}}
+{{log 'start gallery.hbs'}}
+
+<script>
+  function nextImage() {
+    let j = parseInt(document.getElementById("picture").alt) + 1;
+    let image = document.getElementById(`${j}`);
+    let frontImage = document.getElementById("picture");
+    let counter = document.getElementById("counter");
+    let link = document.getElementById("pictureLink");
+
+    if (j > document.getElementsByClassName("galleryScroll").length) {
+      j = 1;
+      let image = document.getElementById(`${j}`);
+      frontImage.src = image.src;
+      frontImage.alt = image.id;
+      link.href = `/gallery/${image.id}`;
+      if ((frontImage.alt).length < 2) {
+        counter.innerHTML = `&#8249; 0${frontImage.alt} / ${counter.title} &#8250;`;
+      } else {
+        counter.innerHTML = `&#8249; ${frontImage.alt} / ${counter.title} &#8250;`;
+      }
+    } else {
+      frontImage.src = image.src;
+      frontImage.alt = image.id;
+      link.href = `/gallery/${image.id}`;
+      if ((frontImage.alt).length < 2) {
+        counter.innerHTML = `&#8249; 0${frontImage.alt} / ${counter.title} &#8250;`;
+      } else {
+        counter.innerHTML = `&#8249; ${frontImage.alt} / ${counter.title} &#8250;`;
+      }
+    }
+  }
+</script>
+
+
+<div id=:"container">
+  <div id="color1">
+    <div id="logo" class="frontWords">
+      <a href="/">_ARCHITEKT</a>
+    </div>
+  </div>
+  <div id="color2">
+    <div class="dropdown">
+      <button class="dropbtn">&equiv;</button>
+      <div class="dropdown-content">
+        <a href="/gallery">Gallery</a>
+        <a href="/about">About</a>
+        {{#if login}}
+        <a href="/gallery/new">Add Image</a>
+        <a href="/auth/logout">Logout</a>
+        {{else}}
+        <a href="/auth/login">Login</a>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+
+  {{#with frontPage}}
+  <a href="/gallery/{{id}}" id="pictureLink"><img src={{link}} id="picture" alt="{{id}}"></a>
+  {{/with}}
+  <a href="#" id="nextButton" onclick="nextImage()">&#8250;</a>
+
+  <h1 id="statement1" class="frontWords">Simplicity
+    <h1 id="statement2" class="frontWords">Redefining Minimalism</h1>
+  </h1>
+</div>
+
+
+{{#each links}}
+<img id="{{id}}" class="galleryScroll" src="{{link}}">
+</img>
+{{/each}}
+
+{{#with counter}}
+<div id="counter" title="{{length}}">&#8249; {{showId}} / {{length}} &#8250;</div>
+{{/with}}

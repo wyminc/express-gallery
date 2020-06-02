@@ -1,0 +1,5 @@
+version: '3'
+services:
+  express-gallery:
+    build: .
+    image: itzymin/express-gallery:local

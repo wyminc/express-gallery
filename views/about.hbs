@@ -1,0 +1,33 @@
+{{log}}
+{{log 'start about.hbs'}}
+
+<div id="logoContainer">
+  <a href="/" id="logo2">_ARCHITEKT</a>
+</div>
+
+<div id="searchDiv">
+  <img src="/assets/search-icon.png" alt="" id="searchIcon">
+  <form action="/search" method="post">
+    <input type="search" id="searchBar" placeholder="Search by Name of Image" name="name">
+  </form>
+</div>
+
+<div id="dropdownPage" class="dropdown">
+  <button class="dropbtn">&equiv;</button>
+  <div class="dropdown-content">
+    <a href="/gallery">Gallery</a>
+    <a href="/about">About</a>
+    {{#if login}}
+    <a href="/gallery/new">Add Image</a>
+    <a href="/auth/logout">Logout</a>
+    {{else}}
+    <a href="/auth/login">Login</a>
+    {{/if}}
+  </div>
+</div>
+
+<h1 id="aboutText">We are a bunch of pompous architects with nothing better to do than to tell you how good we are at
+  our craft. By visting our page, you have taken an interest in our work (as you should) and we would like to
+  congratulate you on being a little less ignorant. Take a look at our gallery and have your eyes washed as you cry
+  tears of absolute joy. Soon enough, maybe you will be able to design like us. Yes our heads are shoved up our own
+  asses, and yes, we like it like that. Have fun you mongrel.</h1>

@@ -1,0 +1,34 @@
+{{log}}
+{{log 'start login.hbs'}}
+
+<div id="logoContainer">
+  <a href="/" id="logo2">_ARCHITEKT</a>
+</div>
+
+<div id="dropdownPage" class="dropdown">
+  <button class="dropbtn">&equiv;</button>
+  <div class="dropdown-content">
+    <a href="/gallery">Gallery</a>
+    <a href="/about">About</a>
+  </div>
+</div>
+
+<form action="/auth/login" method="post" id="form" class="authForms">
+  <h3>
+    <label>Please Login</label>
+  </h3>
+  <img src="/assets/box.png" alt="" id="boxIcon">
+  <input type="text" name="email" id="" class="inputBars" placeholder="Email" required>
+  <br>
+  <br>
+  <img src="/assets/box.png" alt="" id="boxIcon">
+  <input type="password" name="password" id="" class="inputBars" placeholder="Password" required>
+  <br>
+  <br>
+  <label>
+    <input type="submit" value="Login" id="submitButton">
+  </label>
+</form>
+<br>
+<br>
+<a href="/auth/register" id="redirectRegister">Not Registered?</a>

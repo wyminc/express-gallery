@@ -1,0 +1,36 @@
+{{log}}
+{{log 'start gallery-form.hbs'}}
+
+<div id="logoContainer">
+  <a href="/" id="logo2">_ARCHITEKT</a>
+</div>
+
+<div id="dropdownPage" class="dropdown">
+  <button class="dropbtn">&equiv;</button>
+  <div class="dropdown-content">
+    <a href="/gallery">Gallery</a>
+    <a href="/about">About</a>
+    <a href="/auth/logout">Logout</a>
+  </div>
+</div>
+
+<form action="/gallery/new" method="post" id="form">
+  <h3>
+    <label style="color:#797779">Add an Image</label>
+  </h3>
+  <img src="/assets/box.png" alt="" id="boxIcon">
+  <input type="text" name="author_name" id="authorName" class="inputBars" placeholder="Name of the Arist">
+  <br>
+  <br>
+  <img src="/assets/box.png" alt="" id="boxIcon">
+  <input type="text" name="link" id="link" class="inputBars" placeholder="Link to the Hosted Image">
+  <br>
+  <br>
+  <img src="/assets/box.png" alt="" id="boxIcon">
+  <input type="text" name="description" id="description" class="inputBars" placeholder="Title of Image">
+  <br>
+  <br>
+  <label>
+    <input type="submit" value="Submit" id="submitButton">
+  </label>
+</form>
